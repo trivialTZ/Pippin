@@ -13,4 +13,5 @@ SIM:
       NGEN_UNIT: 0.02
       RANSEED_CHANGE: 2 12345
       SOLID_ANGLE: 0.1
+      APPLY_SEARCHEFF_OPT: 3   # override sim_sdss_3yr.input default of 5; SIMLIB supports mask 11
       BATCH_INFO: qsub $ABTEST_TEMPLATES/QSUB_SCC_cpu.TEMPLATE 4
