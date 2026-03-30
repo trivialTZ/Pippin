@@ -30,6 +30,16 @@ export SBATCH_TEMPLATES="/project/pi-brout/templates"
 
 mkdir -p "$PIPPIN_OUTPUT"
 
+# Activate Pippin venv
+source /project/pi-brout/apps/Pippin/.venv/bin/activate
+
+# Ensure PATH_SNDATA_SIM.LIST exists
+mkdir -p "$SCRATCH_SIMDIR"
+if [ ! -f "$SCRATCH_SIMDIR/PATH_SNDATA_SIM.LIST" ]; then
+    echo "$SCRATCH_SIMDIR" > "$SCRATCH_SIMDIR/PATH_SNDATA_SIM.LIST"
+    echo "  Created $SCRATCH_SIMDIR/PATH_SNDATA_SIM.LIST"
+fi
+
 echo "Environment set:"
 echo "  ABTEST_TEMPLATES = $ABTEST_TEMPLATES"
 echo "  SNANA_DIR        = $SNANA_DIR"
