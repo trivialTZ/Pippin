@@ -73,7 +73,7 @@ class SNANASimulation(ConfigBasedExecutable):
         super().__init__(name, output_dir, config, base_file, ": ")
 
         # Check for any replacements
-        path_sndata_sim = get_config().get("SNANA").get("sim_dir")
+        path_sndata_sim = os.path.expandvars(get_config().get("SNANA").get("sim_dir"))
         self.logger.debug(f"Setting PATH_SNDATA_SIM to {path_sndata_sim}")
         self.yaml["CONFIG"]["PATH_SNDATA_SIM"] = path_sndata_sim
 

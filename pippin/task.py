@@ -394,9 +394,15 @@ class Task(ABC):
                 fail_summary = read_yaml(path)
                 for key, dicts in fail_summary.items():
                     if key.startswith("FAILURE-0"):
-                        self.logger.error(
-                            f"{key}: {' '.join(dicts.get('ABORT_MESSAGES', 'Unknown message'))}"
-                        )
+                        messages = dicts.get('ABORT_MESSAGES', ['Unknown message'])
+                        if isinstance(messages, list):
+                            msg_str = ' '.join(
+                                str(m) if isinstance(m, str) else ': '.join(str(k) for k in m)
+                                for m in messages
+                            )
+                        else:
+                            msg_str = str(messages)
+                        self.logger.error(f"{key}: {msg_str}")
                         self.logger.error(
                             f"{key}: Detailed in {dicts.get('JOB_LOG_FILE', 'Unknown path')}"
                         )
