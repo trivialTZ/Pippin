@@ -10,7 +10,7 @@ export ABTEST_TEMPLATES="$(cd "$(dirname "${BASH_SOURCE[0]}")/templates" && pwd)
 # SNANA installation
 export SNANA_DIR="/project/pi-brout/apps/SNANA"
 export SNDATA_ROOT="/project/pi-brout/data"
-export PATH="$SNANA_DIR/bin:$PATH"
+export PATH="$SNANA_DIR/bin:$SNANA_DIR/util:$PATH"
 
 # Simulation output directory
 export SCRATCH_SIMDIR="/project/pi-brout/data/SIM"
