@@ -62,5 +62,5 @@ GENRANGE_RA:      -180.   360.0   deg
 GENRANGE_DECL:    -90.   90 deg 
 
 # negative MWEBV-option ==> correct FLUXCAL with map and central filter wave
-OPT_MWEBV: -3         # SFD98 + Schalfly2011
+OPT_MWEBV: 3          # SFD98 + Schalfly2011
 OPT_MWCOLORLAW: 99   # Fitzpatrick
