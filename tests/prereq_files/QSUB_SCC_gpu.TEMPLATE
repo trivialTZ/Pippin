@@ -3,7 +3,7 @@
 #$ -o REPLACE_LOGFILE
 #$ -j y
 #$ -l h_rt=REPLACE_WALLTIME
-#$ -l mem_total=REPLACE_MEM
+#$ -l h_vmem=REPLACE_MEM
 #$ -l gpus=1
 #$ -l gpu_c=6.0
 #$ -pe omp 1
