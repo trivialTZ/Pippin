@@ -13,6 +13,7 @@ module load gsl/2.5
 export LD_LIBRARY_PATH="/share/pkg.8/gsl/2.5/install/lib:/share/pkg.8/cfitsio/4.4.1/install/lib:$LD_LIBRARY_PATH"
 export SNANA_DIR="/project/pi-brout/apps/SNANA"
 export SNDATA_ROOT="/project/pi-brout/data"
+export PATH_SNDATA_SIM="/project/pi-brout/data/SIM"
 export PATH="$SNANA_DIR/bin:$SNANA_DIR/util:$PATH"
 
 REPLACE_JOB
