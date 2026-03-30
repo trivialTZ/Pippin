@@ -1,9 +1,6 @@
 # ============================================================
-# VERSION B: SGE / qsub backend  (new SCC support)
+# VERSION B: SGE / qsub backend  (treatment)
 # ============================================================
-# Used for A/B test: this is the TREATMENT config.
-# Run with:  python run.py -c tests/scc_abtest/cfg_B_sge.yml tests/scc_abtest/pipeline_B_sge.yml
-
 QUEUE:
   prefix: B
   max_jobs: 200
@@ -16,7 +13,7 @@ DATA_DIRS:
 
 SNANA:
   sim_dir: $SCRATCH_SIMDIR
-  group: ""
+  group: pi-brout
 
 SuperNNova:
   conda_env: snn_cpu
@@ -54,4 +51,4 @@ SCHEDULER:
   gpu_location: $ABTEST_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
 
 SETUP:
-  location: $PRODUCTS/pippin/pippin/tasks
+  location: /project/pi-brout/apps/Pippin/pippin/tasks

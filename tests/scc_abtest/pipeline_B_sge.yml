@@ -1,8 +1,7 @@
 # ============================================================
 # PIPELINE B: SGE / qsub backend  (treatment)
 # ============================================================
-# Runs an identical SDSS SN Ia simulation via qsub/qstat.
-# No DES files required.
+# Uses qsub templates from tests/scc_abtest/templates/
 #
 # Run:
 #   python run.py -c tests/scc_abtest/cfg_B_sge.yml tests/scc_abtest/pipeline_B_sge.yml
@@ -15,5 +14,4 @@ SIM:
       NGEN_UNIT: 0.02
       RANSEED_CHANGE: 2 12345
       SOLID_ANGLE: 0.1
-      # SGE submission — adjust template path and core count for your queue
       BATCH_INFO: qsub $ABTEST_TEMPLATES/QSUB_SCC_cpu.TEMPLATE 4

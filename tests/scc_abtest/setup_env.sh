@@ -1,31 +1,32 @@
 #!/bin/bash
 # ============================================================
-# setup_env.sh  — set required environment variables before
-# running either A/B test pipeline on BU SCC.
-#
-# Edit the values below to match your SCC account/paths,
-# then:  source tests/scc_abtest/setup_env.sh
+# setup_env.sh  — environment for BU SCC (pi-brout group)
+# Usage:  source tests/scc_abtest/setup_env.sh
 # ============================================================
 
-# Path to the abtest templates directory (this folder)
+# Templates directory inside this repo
 export ABTEST_TEMPLATES="$(cd "$(dirname "${BASH_SOURCE[0]}")/templates" && pwd)"
 
-# Directory where SNANA writes simulation output
-# Example: /projectnb/yourgroup/sim
-export SCRATCH_SIMDIR="/projectnb/YOURGROUP/sim"
+# SNANA installation
+export SNANA_DIR="/project/pi-brout/apps/SNANA"
+export SNDATA_ROOT="/project/pi-brout/data"
+export PATH="$SNANA_DIR/bin:$PATH"
 
-# Pippin output root
-# Results land in $PIPPIN_OUTPUT/abtest_A_slurm/ and $PIPPIN_OUTPUT/abtest_B_sge/
-export PIPPIN_OUTPUT="/projectnb/YOURGROUP/pippin_output"
+# Simulation output directory
+export SCRATCH_SIMDIR="/project/pi-brout/data/SIM"
 
-# SNANA installation (needed by SNANA internally)
-export SNANA_DIR="/usr/local/snana"  # adjust to your SCC install
+# Pippin output
+export PIPPIN_OUTPUT="/project/pi-brout/data/pippin_output"
 
-# Optional: location of extra Pippin products (classifiers etc.)
-# export PRODUCTS="/projectnb/YOURGROUP/products"
+# Existing SBATCH templates (for version A — Slurm control test)
+export SBATCH_TEMPLATES="/project/pi-brout/templates"
+
+mkdir -p "$PIPPIN_OUTPUT"
 
 echo "Environment set:"
 echo "  ABTEST_TEMPLATES = $ABTEST_TEMPLATES"
+echo "  SNANA_DIR        = $SNANA_DIR"
+echo "  SNDATA_ROOT      = $SNDATA_ROOT"
 echo "  SCRATCH_SIMDIR   = $SCRATCH_SIMDIR"
 echo "  PIPPIN_OUTPUT    = $PIPPIN_OUTPUT"
-echo "  SNANA_DIR        = $SNANA_DIR"
+echo "  SBATCH_TEMPLATES = $SBATCH_TEMPLATES"

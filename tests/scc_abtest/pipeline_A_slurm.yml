@@ -1,8 +1,8 @@
 # ============================================================
 # PIPELINE A: Slurm backend  (control)
 # ============================================================
-# Runs a small SDSS SN Ia simulation via sbatch/squeue.
-# No DES files required.
+# Uses existing SBATCH templates already on SCC at
+# /project/pi-brout/templates/
 #
 # Run:
 #   python run.py -c tests/scc_abtest/cfg_A_slurm.yml tests/scc_abtest/pipeline_A_slurm.yml
@@ -15,5 +15,4 @@ SIM:
       NGEN_UNIT: 0.02
       RANSEED_CHANGE: 2 12345
       SOLID_ANGLE: 0.1
-      # Slurm submission — adjust template path and core count for your partition
-      BATCH_INFO: sbatch $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE 4
+      BATCH_INFO: sbatch $SBATCH_TEMPLATES/SBATCH_bu_cpu.TEMPLATE 4

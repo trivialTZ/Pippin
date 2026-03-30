@@ -1,9 +1,6 @@
 # ============================================================
-# VERSION A: Slurm backend  (original Pippin behaviour)
+# VERSION A: Slurm backend  (control)
 # ============================================================
-# Used for A/B test: this is the CONTROL config.
-# Run with:  python run.py -c tests/scc_abtest/cfg_A_slurm.yml tests/scc_abtest/pipeline_A_slurm.yml
-
 QUEUE:
   prefix: A
   max_jobs: 200
@@ -16,7 +13,7 @@ DATA_DIRS:
 
 SNANA:
   sim_dir: $SCRATCH_SIMDIR
-  group: ""
+  group: pi-brout
 
 SuperNNova:
   conda_env: snn_cpu
@@ -45,13 +42,13 @@ OUTPUT:
   max_ping_frequency: 300
 
 SBATCH:
-  cpu_location: $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE
-  gpu_location: $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE
+  cpu_location: $SBATCH_TEMPLATES/SBATCH_bu_cpu.TEMPLATE
+  gpu_location: $SBATCH_TEMPLATES/SBATCH_bu_gpu.TEMPLATE
 
 SCHEDULER:
   type: slurm
-  cpu_location: $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE
-  gpu_location: $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE
+  cpu_location: $SBATCH_TEMPLATES/SBATCH_bu_cpu.TEMPLATE
+  gpu_location: $SBATCH_TEMPLATES/SBATCH_bu_gpu.TEMPLATE
 
 SETUP:
-  location: $PRODUCTS/pippin/pippin/tasks
+  location: /project/pi-brout/apps/Pippin/pippin/tasks
