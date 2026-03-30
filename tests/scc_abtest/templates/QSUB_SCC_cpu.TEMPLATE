@@ -3,7 +3,6 @@
 #$ -o REPLACE_LOGFILE
 #$ -j y
 #$ -l h_rt=REPLACE_WALLTIME
-#$ -l h_vmem=REPLACE_MEM
 #$ -pe omp 1
 
 echo "Job $JOB_ID starting on $(hostname) at $(date)"
