@@ -51,4 +51,4 @@ SCHEDULER:
   gpu_location: $SBATCH_TEMPLATES/SBATCH_bu_gpu.TEMPLATE
 
 SETUP:
-  location: /project/pi-brout/apps/Pippin/pippin/tasks
+  location: pippin/tasks

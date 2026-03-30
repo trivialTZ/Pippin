@@ -51,4 +51,4 @@ SCHEDULER:
   gpu_location: $ABTEST_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
 
 SETUP:
-  location: /project/pi-brout/apps/Pippin/pippin/tasks
+  location: pippin/tasks

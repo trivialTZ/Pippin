@@ -24,7 +24,7 @@ echo ""
 # ---------- Version A: Slurm ----------
 echo "[2/3] Running Version A (Slurm) pipeline..."
 python "$PIPPIN_ROOT/run.py" \
-    -c "$PIPPIN_ROOT/tests/scc_abtest/cfg_A_slurm.yml" \
+    --config "$PIPPIN_ROOT/tests/scc_abtest/cfg_A_slurm.yml" \
     "$PIPPIN_ROOT/tests/scc_abtest/pipeline_A_slurm.yml"
 RC_A=$?
 echo "Version A exit code: $RC_A"
@@ -33,7 +33,7 @@ echo ""
 # ---------- Version B: SGE ----------
 echo "[3/3] Running Version B (SGE) pipeline..."
 python "$PIPPIN_ROOT/run.py" \
-    -c "$PIPPIN_ROOT/tests/scc_abtest/cfg_B_sge.yml" \
+    --config "$PIPPIN_ROOT/tests/scc_abtest/cfg_B_sge.yml" \
     "$PIPPIN_ROOT/tests/scc_abtest/pipeline_B_sge.yml"
 RC_B=$?
 echo "Version B exit code: $RC_B"
