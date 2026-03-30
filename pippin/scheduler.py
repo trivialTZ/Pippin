@@ -104,12 +104,16 @@ class SGEScheduler(Scheduler):
         subprocess.run(["qsub", script_path], cwd=cwd)
 
     def get_jobs(self):
-        """Return job names from ``qstat -u $USER``.
+        """Return job names from ``qstat -u $USER -r``.
+
+        Uses ``-r`` flag to get full (untruncated) job names via the
+        ``Full jobname:`` lines.  Plain ``qstat`` truncates names to 10 chars
+        which breaks Pippin's prefix-based job matching.
 
         Returns ``None`` on command failure, ``[]`` when no jobs are queued.
         """
         p = subprocess.run(
-            "qstat -u $USER",
+            "qstat -u $USER -r",
             shell=True,
             text=True,
             stdout=subprocess.PIPE,
@@ -121,14 +125,13 @@ class SGEScheduler(Scheduler):
             )
             return None
 
-        lines = p.stdout.splitlines()
-        # Skip the two header lines (column labels + dashes separator)
-        job_lines = lines[2:] if len(lines) > 2 else []
         names = []
-        for line in job_lines:
-            parts = line.split()
-            if len(parts) >= 3:
-                names.append(parts[2])
+        for line in p.stdout.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("Full jobname:"):
+                name = stripped.split("Full jobname:", 1)[1].strip()
+                if name:
+                    names.append(name)
         return names
 
 

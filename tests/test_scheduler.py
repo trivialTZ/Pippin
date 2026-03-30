@@ -77,12 +77,15 @@ class TestSlurmScheduler:
 # ---------------------------------------------------------------------------
 
 class TestSGEScheduler:
-    # Realistic qstat output from BU SCC (two header lines + job rows)
+    # Realistic qstat -r output from BU SCC
+    # Full jobname lines appear after each job's summary line
     QSTAT_OUTPUT = (
         "job-ID  prior   name       user         state submit/start at     queue\n"
         "------- ------- ---------- ------------ ----- ------------------- -----\n"
-        " 123456  0.5550 PIP_SIM    myuser       r     03/28/2026 10:00:00 all.q\n"
-        " 123457  0.5550 PIP_FIT    myuser       qw    03/28/2026 10:01:00 all.q\n"
+        " 123456  0.5550 PIP_SIM_TRU myuser      r     03/28/2026 10:00:00 all.q\n"
+        "       Full jobname:     B_PIPELINE_B_SGE_SDSS_SIM_B.input-CPU0000\n"
+        " 123457  0.5550 PIP_FIT_TRU myuser      qw    03/28/2026 10:01:00 all.q\n"
+        "       Full jobname:     B_PIPELINE_B_SGE_SDSS_FIT_B.input-CPU0001\n"
     )
 
     def test_submit_calls_qsub(self):
@@ -92,23 +95,26 @@ class TestSGEScheduler:
         mock_run.assert_called_once_with(["qsub", "/tmp/job.sh"], cwd="/tmp")
 
     def test_get_jobs_parses_normal_output(self):
+        """Full jobnames are parsed from 'Full jobname:' lines (not truncated col 2)."""
         sched = SGEScheduler()
         with patch("pippin.scheduler.subprocess.run",
                    return_value=_make_proc(stdout=self.QSTAT_OUTPUT)):
             jobs = sched.get_jobs()
-        assert jobs == ["PIP_SIM", "PIP_FIT"]
+        assert jobs == [
+            "B_PIPELINE_B_SGE_SDSS_SIM_B.input-CPU0000",
+            "B_PIPELINE_B_SGE_SDSS_FIT_B.input-CPU0001",
+        ]
 
     def test_get_jobs_empty_queue(self):
-        """qstat with no jobs prints only headers (or nothing)."""
+        """qstat with no jobs prints nothing (exit 0)."""
         sched = SGEScheduler()
-        # No jobs: qstat prints nothing (exit 0)
         with patch("pippin.scheduler.subprocess.run",
                    return_value=_make_proc(stdout="")):
             jobs = sched.get_jobs()
         assert jobs == []
 
     def test_get_jobs_only_headers(self):
-        """qstat may print two header lines even with no jobs on some systems."""
+        """qstat -r with no jobs prints only header lines, no Full jobname lines."""
         sched = SGEScheduler()
         headers_only = (
             "job-ID  prior   name       user   state  submit/start at  queue\n"
