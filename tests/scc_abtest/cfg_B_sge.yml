@@ -10,6 +10,7 @@ QUEUE:
 
 DATA_DIRS:
   - data_files
+  - /project/pi-brout/apps/Pippin
 
 SNANA:
   sim_dir: $SCRATCH_SIMDIR
