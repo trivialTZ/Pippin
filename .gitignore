@@ -111,3 +111,9 @@ uv.lock
 # mypy
 .mypy_cache/
 .idea/
+
+# Pippin runtime output
+tmp_output/
+
+# Claude plan file
+.plan.md
