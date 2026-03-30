@@ -336,6 +336,8 @@ class SNANASimulation(ConfigBasedExecutable):
                 "BATCH_MEM",
                 "NGEN_UNIT",
                 "RESET_CIDOFF",
+                "APPLY_SEARCHEFF_OPT",
+                "SOLID_ANGLE",
             ]
             if key in direct_set:
                 c[key] = self.config["GLOBAL"][key]
