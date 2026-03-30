@@ -36,7 +36,7 @@ SMEARFLAG_FLUX:    1  # photo-stat smearing of signal, sky, etc ...
 SMEARFLAG_ZEROPT:  1  # smear zero-point with zptsig
 
 
-APPLY_SEARCHEFF_OPT: 5
+APPLY_SEARCHEFF_OPT: 1   # 1=pipeline trigger only; mask 11 does not support bit 4 (zHOST-from-file)
 NEWMJD_DIF: 0.4
 
 SEARCHEFF_SPEC_FILE:   SEARCHEFF_SPEC_ZERO.DAT 
