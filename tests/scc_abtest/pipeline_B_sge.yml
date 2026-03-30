@@ -4,12 +4,16 @@
 # Uses qsub templates from tests/scc_abtest/templates/
 #
 # Run:
-#   python run.py -c tests/scc_abtest/cfg_B_sge.yml tests/scc_abtest/pipeline_B_sge.yml
+#   source tests/scc_abtest/setup_env.sh
+#   python run.py --config tests/scc_abtest/cfg_B_sge.yml tests/scc_abtest/pipeline_B_sge.yml
 
 SIM:
   SDSS_SIM_B:
     IA_G10:
       BASE: surveys/sdss/sims_ia/sn_ia_g10_sdss_3yr.input
+      # Override hardcoded Midway paths with SCC-local paths
+      SIMLIB_FILE: /project/pi-brout/data/simlib/SDSS/SDSS_3year.SIMLIB
+      HOSTLIB_FILE: NONE
     GLOBAL:
       NGEN_UNIT: 0.02
       RANSEED_CHANGE: 2 12345
