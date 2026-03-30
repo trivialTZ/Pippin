@@ -138,6 +138,7 @@ class Task(ABC):
 
         self.force_refresh = False
         self.force_ignore = False
+        self.scheduler = None
 
         self.output.update(
             {
@@ -168,6 +169,9 @@ class Task(ABC):
     def set_sbatch_gpu_header(self, header):
         self.logger.debug("Set gpu header")
         self.sbatch_gpu_header = header
+
+    def set_scheduler(self, scheduler):
+        self.scheduler = scheduler
 
     def update_setup(self, setup_dict, task_setup):
         return task_setup.format(**setup_dict)
@@ -265,7 +269,7 @@ class Task(ABC):
             self.num_empty += 1
             if self.num_empty >= self.num_empty_threshold:
                 self.logger.error(
-                    f"No more waiting, there are no slurm jobs active that match {match}! Debug output dir {self.output_dir}"
+                    f"No more waiting, there are no scheduler jobs active that match {match}! Debug output dir {self.output_dir}"
                 )
                 return Task.FINISHED_FAILURE
             elif self.num_empty > 1 and self.num_empty > self.display_threshold:

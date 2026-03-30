@@ -1,0 +1,63 @@
+# Pippin global config for BU SCC (Open Grid Scheduler / SGE)
+#
+# Usage:
+#   pippin -c configs/scc/cfg_scc.yml your_pipeline.yml
+#
+# Set environment variables before running:
+#   export QSUB_TEMPLATES=/path/to/your/qsub/templates
+#   export SCRATCH_SIMDIR=/projectnb/yourgroup/sim
+#   export PIPPIN_OUTPUT=/projectnb/yourgroup/pippin_output
+
+QUEUE:
+  prefix: PIP
+  max_jobs: 200          # SCC allows many more concurrent jobs than Midway
+  max_jobs_in_queue: 500
+  max_gpu_jobs: 4
+  max_gpu_jobs_in_queue: 8
+
+DATA_DIRS:
+  - data_files
+
+SNANA:
+  sim_dir: $SCRATCH_SIMDIR
+  group: ""
+
+SuperNNova:
+  conda_env: snn_cpu
+  location: $PRODUCTS/classifiers/supernnova
+
+SNIRF:
+  conda_env: snn_cpu
+  location: $PRODUCTS/classifiers/snirf
+
+DataSkimmer:
+  conda_env: snn_cpu
+  location: $PRODUCTS/utilities/dataskim
+
+SCONE:
+  init_env_cpu: source activate scone_cpu
+  init_env_gpu: source activate scone_gpu
+  location: $SCONE_DIR
+
+CosmoMC:
+  location: $PRODUCTS/CosmoMC/CosmoMC-master
+  static_loc: cosmomc_static_chains
+
+OUTPUT:
+  output_dir: $PIPPIN_OUTPUT
+  ping_frequency: 60
+  max_ping_frequency: 600
+
+# Keep SBATCH key for backward compatibility with any configs that reference it
+SBATCH:
+  cpu_location: $QSUB_TEMPLATES/QSUB_SCC.TEMPLATE
+  gpu_location: $QSUB_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
+
+# Primary scheduler configuration
+SCHEDULER:
+  type: sge
+  cpu_location: $QSUB_TEMPLATES/QSUB_SCC.TEMPLATE
+  gpu_location: $QSUB_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
+
+SETUP:
+  location: $PRODUCTS/pippin/pippin/tasks

@@ -46,5 +46,10 @@ SBATCH:
   gpu_location: prereq_files/SBATCH_gpu.TEMPLATE
   clean: True
 
+SCHEDULER:
+  type: slurm  # slurm | sge
+  cpu_location: prereq_files/SBATCH_Midway2b.TEMPLATE
+  gpu_location: prereq_files/SBATCH_gpu.TEMPLATE
+
 SETUP:
     location: pippin/tasks

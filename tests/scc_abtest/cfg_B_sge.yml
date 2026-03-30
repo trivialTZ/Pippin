@@ -1,0 +1,57 @@
+# ============================================================
+# VERSION B: SGE / qsub backend  (new SCC support)
+# ============================================================
+# Used for A/B test: this is the TREATMENT config.
+# Run with:  python run.py -c tests/scc_abtest/cfg_B_sge.yml tests/scc_abtest/pipeline_B_sge.yml
+
+QUEUE:
+  prefix: B
+  max_jobs: 200
+  max_jobs_in_queue: 500
+  max_gpu_jobs: 4
+  max_gpu_jobs_in_queue: 8
+
+DATA_DIRS:
+  - data_files
+
+SNANA:
+  sim_dir: $SCRATCH_SIMDIR
+  group: ""
+
+SuperNNova:
+  conda_env: snn_cpu
+  location: $PRODUCTS/classifiers/supernnova
+
+SNIRF:
+  conda_env: snn_cpu
+  location: $PRODUCTS/classifiers/snirf
+
+DataSkimmer:
+  conda_env: snn_cpu
+  location: $PRODUCTS/utilities/dataskim
+
+SCONE:
+  init_env_cpu: source activate scone_cpu
+  init_env_gpu: source activate scone_gpu
+  location: $SCONE_DIR
+
+CosmoMC:
+  location: $PRODUCTS/CosmoMC/CosmoMC-master
+  static_loc: cosmomc_static_chains
+
+OUTPUT:
+  output_dir: $PIPPIN_OUTPUT/abtest_B_sge
+  ping_frequency: 30
+  max_ping_frequency: 300
+
+SBATCH:
+  cpu_location: $ABTEST_TEMPLATES/QSUB_SCC_cpu.TEMPLATE
+  gpu_location: $ABTEST_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
+
+SCHEDULER:
+  type: sge
+  cpu_location: $ABTEST_TEMPLATES/QSUB_SCC_cpu.TEMPLATE
+  gpu_location: $ABTEST_TEMPLATES/QSUB_SCC_gpu.TEMPLATE
+
+SETUP:
+  location: $PRODUCTS/pippin/pippin/tasks

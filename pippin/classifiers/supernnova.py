@@ -459,7 +459,7 @@ class SuperNNovaClassifier(Classifier):
             self.logger.info(
                 f"Submitting batch job to {'train' if training else 'predict using'} SuperNNova"
             )
-            subprocess.run(["sbatch", slurm_output_file], cwd=self.output_dir)
+            self.scheduler.submit(slurm_output_file, cwd=self.output_dir)
 
         return True
 

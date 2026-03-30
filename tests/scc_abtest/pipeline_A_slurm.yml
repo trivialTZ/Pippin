@@ -1,0 +1,19 @@
+# ============================================================
+# PIPELINE A: Slurm backend  (control)
+# ============================================================
+# Runs a small SDSS SN Ia simulation via sbatch/squeue.
+# No DES files required.
+#
+# Run:
+#   python run.py -c tests/scc_abtest/cfg_A_slurm.yml tests/scc_abtest/pipeline_A_slurm.yml
+
+SIM:
+  SDSS_SIM_A:
+    IA_G10:
+      BASE: surveys/sdss/sims_ia/sn_ia_g10_sdss_3yr.input
+    GLOBAL:
+      NGEN_UNIT: 0.02
+      RANSEED_CHANGE: 2 12345
+      SOLID_ANGLE: 0.1
+      # Slurm submission — adjust template path and core count for your partition
+      BATCH_INFO: sbatch $ABTEST_TEMPLATES/SBATCH_SCC_cpu.TEMPLATE 4

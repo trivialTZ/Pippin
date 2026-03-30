@@ -23,6 +23,7 @@ from pippin.merge import Merger
 from pippin.snana_fit import SNANALightCurveFit
 from pippin.snana_sim import SNANASimulation
 from pippin.task import Task
+from pippin.scheduler import get_scheduler
 
 
 class Manager:
@@ -71,14 +72,18 @@ class Manager:
 
         self.logger.debug(self.global_config.keys())
 
-        self.sbatch_cpu_path = get_data_loc(
-            self.global_config["SBATCH"]["cpu_location"]
-        )
+        self.scheduler = get_scheduler(self.global_config)
+
+        # Resolve template paths: prefer SCHEDULER block, fall back to SBATCH
+        sched_cfg = self.global_config.get("SCHEDULER", {})
+        sbatch_cfg = self.global_config.get("SBATCH", {})
+        cpu_loc = sched_cfg.get("cpu_location") or sbatch_cfg.get("cpu_location")
+        gpu_loc = sched_cfg.get("gpu_location") or sbatch_cfg.get("gpu_location")
+
+        self.sbatch_cpu_path = get_data_loc(cpu_loc)
         with open(self.sbatch_cpu_path, "r") as f:
             self.sbatch_cpu_header = f.read()
-        self.sbatch_gpu_path = get_data_loc(
-            self.global_config["SBATCH"]["gpu_location"]
-        )
+        self.sbatch_gpu_path = get_data_loc(gpu_loc)
         with open(self.sbatch_gpu_path, "r") as f:
             self.sbatch_gpu_header = f.read()
         self.sbatch_cpu_header = self.clean_header(self.sbatch_cpu_header)
@@ -214,12 +219,7 @@ class Manager:
         return total_tasks
 
     def get_num_running_jobs(self):
-        num_jobs = int(
-            subprocess.check_output(
-                "squeue -ho %A -u $USER | wc -l", shell=True, stderr=subprocess.STDOUT
-            )
-        )
-        return num_jobs
+        return self.scheduler.count_jobs()
 
     def get_task_to_run(self):
         for t in self.tasks:
@@ -449,6 +449,7 @@ class Manager:
                         t.set_force_ignore(self.get_force_ignore(t))
                         t.set_sbatch_cpu_header(self.sbatch_cpu_header)
                         t.set_sbatch_gpu_header(self.sbatch_gpu_header)
+                        t.set_scheduler(self.scheduler)
                         t.set_setup(self.task_setup)
                         started = t.run()
                     except Exception as e:
@@ -488,23 +489,15 @@ class Manager:
                 current_sleep_time *= 2
                 if current_sleep_time > max_sleep_time:
                     current_sleep_time = max_sleep_time
-                p = subprocess.run(
-                    "squeue -h -u $USER -o '%.j'",
-                    shell=True,
-                    text=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                if (p.returncode != 0) or (p.stderr != ""):
-                    self.logger.error(
-                        f"Command '{p.args}' failed with exit status '{p.returncode}' and error '{p.stderr.strip()}'"
-                    )
+                jobs = self.scheduler.get_jobs()
+                if jobs is None:
+                    self.logger.error("Scheduler queue poll failed; will retry next cycle")
                 else:
-                    squeue = [i.strip() for i in p.stdout.splitlines()]
+                    squeue = jobs
                     n = len(squeue)
                     if n == 0 or n > self.max_jobs:
                         self.logger.debug(
-                            f"Squeue is reporting {n} NUM_JOBS in the queue... this is either 0 or toeing the line as to too many"
+                            f"Scheduler reporting {n} NUM_JOBS in the queue... this is either 0 or toeing the line as to too many"
                         )
         num_errs = self.log_finals()
         return num_errs

@@ -1,0 +1,21 @@
+# Minimal smoke-test pipeline for BU SCC.
+#
+# Uses SDSS survey input files that ship with the Pippin repo — no DES_ROOT
+# or other DES-only ancillary files are required.
+#
+# Run with:
+#   pippin -c configs/scc/cfg_scc.yml configs/scc/smoke_test_sim.yml
+#
+# Expected result: one small SDSS Ia simulation completes successfully.
+# Check $PIPPIN_OUTPUT/SMOKE_TEST_SCC/ for output and logs.
+
+SIM:
+  SDSS_SMOKE:
+    IA_G10:
+      BASE: surveys/sdss/sims_ia/sn_ia_g10_sdss_3yr.input
+    GLOBAL:
+      NGEN_UNIT: 0.01          # Very small — just enough to verify the pipeline
+      RANSEED_CHANGE: 2 12345
+      SOLID_ANGLE: 0.1
+      # For SCC: user must set BATCH_INFO to use qsub, e.g.:
+      # BATCH_INFO: qsub $QSUB_TEMPLATES/QSUB_SCC.TEMPLATE 4
