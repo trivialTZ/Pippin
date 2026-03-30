@@ -12,6 +12,13 @@ export SNANA_DIR="/project/pi-brout/apps/SNANA"
 export SNDATA_ROOT="/project/pi-brout/data"
 export PATH="$SNANA_DIR/bin:$SNANA_DIR/util:$PATH"
 
+# SNANA runtime libraries — must load before running snlc_sim.exe
+module load cfitsio/4.4.1
+module load gsl/2.5
+export GSL_DIR=/share/pkg.8/gsl/2.5/install
+export CFITSIO_DIR=/share/pkg.8/cfitsio/4.4.1/install
+export LD_LIBRARY_PATH="$GSL_DIR/lib:$CFITSIO_DIR/lib:$LD_LIBRARY_PATH"
+
 # Simulation output directory
 export SCRATCH_SIMDIR="/project/pi-brout/data/SIM"
 
